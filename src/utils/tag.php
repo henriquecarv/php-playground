@@ -1,9 +1,14 @@
 <?php 
 
-include($_SERVER['DOCUMENT_ROOT']."/models/TagModel.php");
+function has_tag(string $tag, $tags) {
+    echo json_encode($tags[0]);
+    $find_tag = function($item1) use ($tag, $tags) {
+        if ($item1 === "") return "";
 
-function has_tag(string $tag, Tag ...$tags) {
-    $found = array_search($tag, $tags, true);
+        return $key === "tag" && $tags[$key] === $tag;
+    };
+
+    $found = array_reduce($tags, $filter_tag, "");
 
     return $found;
 }

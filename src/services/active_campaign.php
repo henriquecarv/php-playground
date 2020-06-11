@@ -3,13 +3,13 @@
 function get_contacts() {
     include($_SERVER['DOCUMENT_ROOT']."/config/environment.php");
 
-    $end_point = "$active_campaign_url/contacts";
+    $endPoint = "$activeCampaignUrl/contacts";
 
-    $curl = curl_init($end_point);
+    $curl = curl_init($endPoint);
 
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER, [
-        "Api-Token: $active_campaign_token",
+        "Api-Token: $activeCampaignToken",
         'Content-Type: application/json'
     ]);
     

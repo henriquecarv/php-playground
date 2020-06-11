@@ -4,61 +4,64 @@
 function get_tags() {
     include($_SERVER['DOCUMENT_ROOT']."/config/environment.php");
 
-    $end_point = "$active_campaign_url/tags";
+    $endPoint = "$activeCampaignUrl/tags";
 
-    $curl = curl_init($end_point);
+    $curl = curl_init($endPoint);
 
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_FAILONERROR, true);
     curl_setopt($curl, CURLOPT_HTTPHEADER, [
-        "Api-Token: $active_campaign_token",
+        "Api-Token: $activeCampaignToken",
         'Content-Type: application/json'
     ]);
     
     $response = curl_exec($curl);
     $error = curl_error($curl);
+    curl_close($curl);
 
-    if ($error !== '') {
+    if ($error) {
         echo $error;
+        return '';
     }
 
-    curl_close($curl);
+    $jsonData = json_decode($response, true)['tags'];
     
-    return $response;
+    return $jsonData;
 }
 
 
 
-function create_tag(string $tag) {
+function create_tag(string $tag = "My php internal") {
     include($_SERVER['DOCUMENT_ROOT']."/config/environment.php");
-    include($_SERVER['DOCUMENT_ROOT']."/models/TagModel.php");
 
-    $end_point = "$active_campaign_url/tags";
+    $endPoint = "$activeCampaignUrl/tags";
 
-    $curl = curl_init($end_point);
+    $curl = curl_init($endPoint);
     
-    $post = [ "tag" => new Tag($tag, "contact")];
+    $post = json_encode(array("tag" => array("tag" => $tag, "tagType" => "contact", "description" => $tag)));
 
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, post);
+    curl_setopt($curl, CURLOPT_FAILONERROR, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $post);
     curl_setopt($curl, CURLOPT_HTTPHEADER, [
-        "Api-Token: $active_campaign_token",
+        "Api-Token: $activeCampaignToken",
         'Content-Type: application/json'
     ]);
     
     $response = curl_exec($curl);
     $error = curl_error($curl);
-
-    if ($error !== '') {
-        echo $error;
-    }
-
     curl_close($curl);
+
+    if ($error) {
+        echo $error;
+        return '';
+    }
 
     $jsonData = json_decode($response, true)['tag'];
     $createdTagName = $jsonData['tag'];
     $createdTagType = $jsonData['tagType'];
-
-    return new Tag($createdTagName, $createdTagType);
+    
+    echo $response;
 }
 
 ?>
