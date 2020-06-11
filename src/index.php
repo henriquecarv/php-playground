@@ -8,7 +8,7 @@ $value = "Queries";
     <body>
         <h1>Hello, <?= $value ?>!</h1>
 
-        <a href="/pages/queries?test=foo&foo=bar">Queries</a>
+        <a href="/pages/queries?utm_source=foo&foo=bar">Queries</a>
         <a href="/pages/contacts/">Contacts</a>
     </body>
 </html>

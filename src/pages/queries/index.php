@@ -4,7 +4,7 @@ $value = "page 2";
 
 include($_SERVER['DOCUMENT_ROOT']."/utils/url_parser.php");
 
-$arr = get_vars();
+$arr = filter_utm();
 ?>
 
 <html>
