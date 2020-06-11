@@ -1,6 +1,5 @@
 <?php
 
-
 function get_contacts() {
     include($_SERVER['DOCUMENT_ROOT']."/config/environment.php");
 
