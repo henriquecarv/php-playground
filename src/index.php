@@ -1,6 +1,6 @@
 <?php
 
-$value = "World";
+$value = "Queries";
 
 ?>
 
@@ -8,7 +8,7 @@ $value = "World";
     <body>
         <h1>Hello, <?= $value ?>!</h1>
 
-        <a href="/pages/page2">Page 2</a>
+        <a href="/pages/queries?test=foo&foo=bar">Queries</a>
         <a href="/pages/contacts/">Contacts</a>
     </body>
 </html>

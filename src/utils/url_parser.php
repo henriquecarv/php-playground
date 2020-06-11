@@ -1,9 +1,12 @@
 <?php 
 
-function getUri() {
+
+function get_vars() {
     $uri = $_SERVER['REQUEST_URI'];
 
-    return $uri;
+    parse_str($uri, $output);
+
+    return $output;
 }
 
 ?>

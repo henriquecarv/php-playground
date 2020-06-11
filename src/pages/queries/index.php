@@ -4,13 +4,16 @@ $value = "page 2";
 
 include($_SERVER['DOCUMENT_ROOT']."/utils/url_parser.php");
 
-$uri = getUri();
+$arr = get_vars();
 ?>
 
 <html>
     <body>
         <h1>Hello, <?= $value ?>!</h1>
         
-        <p>URI: <?= $uri?></p>
+        <?php foreach($arr as $item): ?>
+            <p><?= $item ?></p>
+        <?php endforeach; ?>
+        
     </body>
 </html>
