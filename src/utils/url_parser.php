@@ -1,6 +1,5 @@
 <?php 
 
-
 function get_vars() {
     $uri = $_SERVER['REQUEST_URI'];
 
