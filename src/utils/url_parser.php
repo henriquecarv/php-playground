@@ -17,9 +17,9 @@ function filter_utm($search = "utm_") {
         return strpos($key, $search) !== false;
     };
 
-    $filtered_vars = array_filter(array_keys($vars), $filter_utm_vars);
+    $utms = array_filter(array_keys($vars), $filter_utm_vars);
 
-    return array_intersect_key($vars, array_flip($filtered_vars));
+    return array_intersect_key($vars, array_flip($utms));
 }
 
 ?>
