@@ -128,20 +128,24 @@ function create_tag(string $tag = "benetest", string $tagType = "contact", strin
 }
 
 
-function trigger_active_campaign() {
+function trigger_active_campaign(int $contactId) {
     $vars = get_vars();
     $utm = filter_utm($vars);
-
     $tags = get_tags($utm);
-
-    $hasTag = has_tag($tags, $utm) !== null;
+    $tag = has_tag($tags, $utm);
 
     // if Tag does not exist
-    if(hasTag !== 1) {
-        create_tag($utm);
+    if($tag === null) {
+        $tag = create_tag($utm);
+        $tag = $tag->tag;
     }
 
-    return $hasTag;
+    $tagId = $tag->id;
+    $contactTag = array("contactTag" => array("contact" => $contactId, "tag" => $tagId));
+
+    $result = request_api("contactTags", "POST", $contactTag);
+
+    return $result;
 }
 
 ?>
