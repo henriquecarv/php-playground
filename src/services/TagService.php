@@ -88,7 +88,6 @@ function request_api(string $endPoint, string $method = "GET", array $post = arr
  */ 
 function has_tag(array $tags, string $tag) {
     $tag_filter = function ($tagElement) use ($tag) {
-        echo json_encode($tagElement);
         return $tagElement->tag === $tag;
     };
 
@@ -102,8 +101,8 @@ function has_tag(array $tags, string $tag) {
  * 
  * @return array Request response
  */ 
-function get_tags(string $tag= "benetest") {
-    list("tags" => $tags) = request_api("tags/search=$tag");
+function get_tags(string $tag) {
+    list("tags" => $tags) = request_api("tags?search=$tag");
 
     return $tags;
 }
@@ -118,7 +117,6 @@ function get_tags(string $tag= "benetest") {
  * @return string  Created tag name;
  */ 
 function create_tag(string $tag = "benetest", string $tagType = "contact", string $tagDescription = "") {
-    echo "create triggered";
     $post = json_encode(array("tag" => array("tag" => $tag, "tagType" => $tagType, "description" => $tagDescription)));
 
     list("tag" => $createdTag) = request_api("tags", "POST", $post);
@@ -129,13 +127,21 @@ function create_tag(string $tag = "benetest", string $tagType = "contact", strin
     return $createdTagName;
 }
 
+
 function trigger_active_campaign() {
     $vars = get_vars();
     $utm = filter_utm($vars);
 
-    $tags = get_tags();
+    $tags = get_tags($utm);
 
-    return has_tag($tags, $utm);
+    $hasTag = has_tag($tags, $utm) !== null;
+
+    // if Tag does not exist
+    if(hasTag !== 1) {
+        create_tag($utm);
+    }
+
+    return $hasTag;
 }
 
 ?>
