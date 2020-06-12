@@ -4,10 +4,7 @@ $value = "page 2";
 
 include($_SERVER['DOCUMENT_ROOT']."/services/TagService.php");
 
-$vars = get_vars();
-$utm = filter_utm($vars);
-
-$tags = get_tags();
+$test = json_encode(trigger_active_campaign());
 
 ?>
 
@@ -15,9 +12,7 @@ $tags = get_tags();
     <body>
         <h1>Hello, <?= $value ?>!</h1>
 
-        <p><?= $utm  ?></p>
-
-        <p><?= $tags  ?></p>
+         <p><?= $test  ?></p>
         
 
     </body>

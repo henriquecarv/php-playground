@@ -22,7 +22,7 @@ function get_vars() {
  * 
  * @return string|null Found variable
  */ 
-function filter_utm(array $vars, $search = "utm_content") {
+function filter_utm(array $vars, string $search = "utm_content") {
     $filter_utm_vars = function($key) use ($search) {
         return strpos($key, $search) !== false;
     };
@@ -79,18 +79,37 @@ function request_api(string $endPoint, string $method = "GET", array $post = arr
 }
 
 /**
+ * Checks if array of tags has a specific tag
+ * 
+ * @param array   $tags  Tags;
+ * @param string  $tag   Tag name;
+ * 
+ * @return array|null Found tag
+ */ 
+function has_tag(array $tags, string $tag) {
+    $tag_filter = function ($tagElement) use ($tag) {
+        echo json_encode($tagElement);
+        return $tagElement->tag === $tag;
+    };
+
+    $utmTag = array_filter($tags, $tag_filter);
+
+    return $utmTag;
+}
+
+/**
  * Retrive Active Campaign tags
  * 
  * @return array Request response
  */ 
-function get_tags() {
-    list("tags" => $tags) = request_api("tags");
+function get_tags(string $tag= "benetest") {
+    list("tags" => $tags) = request_api("tags/search=$tag");
 
-    return json_encode($tags);
+    return $tags;
 }
 
 /**
- * Create tag
+ * Create new Active Campaign tag
  * 
  * @param string   $tag  Tag name;
  * @param string?  $tagType  Tag type;
@@ -98,7 +117,8 @@ function get_tags() {
  * 
  * @return string  Created tag name;
  */ 
-function create_tag(string $tag = "My php internal", string $tagType = "contact", string $tagDescription = "") {
+function create_tag(string $tag = "benetest", string $tagType = "contact", string $tagDescription = "") {
+    echo "create triggered";
     $post = json_encode(array("tag" => array("tag" => $tag, "tagType" => $tagType, "description" => $tagDescription)));
 
     list("tag" => $createdTag) = request_api("tags", "POST", $post);
@@ -107,6 +127,15 @@ function create_tag(string $tag = "My php internal", string $tagType = "contact"
     $createdTagType = $$createdTag['tagType'];
     
     return $createdTagName;
+}
+
+function trigger_active_campaign() {
+    $vars = get_vars();
+    $utm = filter_utm($vars);
+
+    $tags = get_tags();
+
+    return has_tag($tags, $utm);
 }
 
 ?>
